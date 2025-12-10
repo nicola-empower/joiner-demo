@@ -5,6 +5,10 @@ import Testimonials from "../components/Testimonials.jsx";
 import FAQ from "../components/FAQ.jsx";
 import ProjectTransformation from "../components/ProjectTransformation.jsx";
 import ProjectGallery from "../components/ProjectGallery.jsx";
+import FeatureSection from "../components/FeatureSection.jsx";
+import ServiceAreaMap from "../components/ServiceAreaMap.jsx";
+import ProcessFlow from "../components/ProcessFlow.jsx";
+import SafetyGuarantee from "../components/SafetyGuarantee.jsx";
 ---
 
 <Layout title="Oak & Chisel - Master Bespoke Joinery">
@@ -94,22 +98,31 @@ import ProjectGallery from "../components/ProjectGallery.jsx";
 
 		<div class="relative z-20 bg-white"><TrustBar client:visible /></div>
 
-		<!-- Services Preview Section -->
-		<div class="py-24 sm:py-32 bg-stone-50">
-			<div class="mx-auto max-w-7xl px-6 lg:px-8">
-				<div class="mx-auto max-w-2xl text-center">
-					<h2 class="text-base font-semibold leading-7 text-wood">
-						The Art of Wood
-					</h2>
-					<p
-						class="mt-2 text-3xl font-bold tracking-tight text-primary sm:text-4xl"
-					>
-						Made to Measure
-					</p>
-				</div>
-				<!-- Add more content here later -->
-			</div>
-		</div>
+		<!-- Services Feature Section -->
+		<FeatureSection
+			client:visible
+			title="Master Craftsmanship"
+			subtitle="Bespoke Joinery"
+			description="From custom staircases to heritage window restoration, we bring decades of experience to every cut, joint, and finish."
+			features={[
+				{
+					title: "Custom Furniture",
+					desc: "Built-in wardrobes, bookcases, and alcove units.",
+				},
+				{
+					title: "Architectural Joinery",
+					desc: "Staircases, doors, and heritage sash windows.",
+				},
+				{
+					title: "Kitchen Fitting",
+					desc: "Precision installation of luxury kitchen suites.",
+				},
+			]}
+			imageSrc="/hero.png"
+			quote="The level of detail in our new library shelves is simply astounding. It's the centerpiece of the room."
+			author="Mrs. H. Reynolds, Ely"
+			align="left"
+		/>
 
 		<!-- Visual Showcase Section -->
 		<div class="py-24 bg-white">
@@ -146,7 +159,36 @@ import ProjectGallery from "../components/ProjectGallery.jsx";
 			</div>
 		</div>
 
+		<ProcessFlow client:visible />
+
+		<!-- Service Area Map Section -->
+		<div class="py-24 bg-white">
+			<div class="mx-auto max-w-7xl px-6 lg:px-8">
+				<div class="mx-auto max-w-2xl text-center mb-16">
+					<h2 class="text-base font-semibold leading-7 text-accent">
+						Local Coverage
+					</h2>
+					<p
+						class="mt-2 text-3xl font-bold tracking-tight text-primary sm:text-4xl"
+					>
+						Serving Cambridge & East Anglia
+					</p>
+					<p class="mt-4 text-lg text-gray-500">
+						Expert joinery services across Ely, Newmarket, Saffron
+						Walden, and surrounding villages.
+					</p>
+				</div>
+				<ServiceAreaMap
+					client:only="react"
+					center={[52.2053, 0.1218]}
+					city="Cambridge"
+					radiusMiles={20}
+				/>
+			</div>
+		</div>
+
 		<Testimonials client:visible />
+		<SafetyGuarantee client:visible />
 		<FAQ client:visible />
 	</main>
 </Layout>
