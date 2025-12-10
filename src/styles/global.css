@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Outfit', sans-serif;
+  --color-primary: #271c19;
+  /* Brown 900 (Dark Wood) */
+  --color-secondary: #5d4a41;
+  /* Brown 600 */
+  --color-accent: #d97706;
+  /* Amber 600 - Varnish/Gold */
+  --color-wood: #92400e;
+  /* Amber 800 - Oak */
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-primary antialiased selection:bg-accent/20 selection:text-white;
+  }
+}
