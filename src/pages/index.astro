@@ -3,6 +3,8 @@ import Layout from "../layouts/Layout.astro";
 import TrustBar from "../components/TrustBar.jsx";
 import Testimonials from "../components/Testimonials.jsx";
 import FAQ from "../components/FAQ.jsx";
+import ProjectTransformation from "../components/ProjectTransformation.jsx";
+import ProjectGallery from "../components/ProjectGallery.jsx";
 ---
 
 <Layout title="Oak & Chisel - Master Bespoke Joinery">
@@ -92,7 +94,7 @@ import FAQ from "../components/FAQ.jsx";
 
 		<div class="relative z-20 bg-white"><TrustBar client:visible /></div>
 
-        <!-- Services Preview Section -->
+		<!-- Services Preview Section -->
 		<div class="py-24 sm:py-32 bg-stone-50">
 			<div class="mx-auto max-w-7xl px-6 lg:px-8">
 				<div class="mx-auto max-w-2xl text-center">
@@ -108,9 +110,7 @@ import FAQ from "../components/FAQ.jsx";
 				<!-- Add more content here later -->
 			</div>
 		</div>
-	<Testimonials client:visible />
-        <FAQ client:visible />
-    </main>
+		<Testimonials client:visible />
+		<FAQ client:visible />
+	</main>
 </Layout>
-
-
