@@ -110,6 +110,42 @@ import ProjectGallery from "../components/ProjectGallery.jsx";
 				<!-- Add more content here later -->
 			</div>
 		</div>
+
+		<!-- Visual Showcase Section -->
+		<div class="py-24 bg-white">
+			<div class="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-20">
+				<!-- Feature 1: The Transformation -->
+				<div>
+					<div class="mb-10 text-center md:text-left">
+						<h3 class="text-2xl font-bold text-gray-900 mb-4">
+							Case Study: The Evening Garden
+						</h3>
+						<p class="text-gray-600 max-w-2xl">
+							See how we transformed a standard garden into a
+							luxury multi-level entertainment space, complete
+							with integrated lighting for evening hosting.
+						</p>
+					</div>
+					<ProjectTransformation client:visible />
+				</div>
+
+				<!-- Feature 2: Gallery Grid -->
+				<div>
+					<div class="mb-10 text-center md:text-left">
+						<h3 class="text-2xl font-bold text-gray-900 mb-4">
+							Recent Commission: Walk-in Wardrobe
+						</h3>
+						<p class="text-gray-600 max-w-2xl">
+							A fully bespoke dressing room fit-out featuring
+							floor-to-ceiling walnut cabinetry and soft-close
+							hardware.
+						</p>
+					</div>
+					<ProjectGallery client:visible />
+				</div>
+			</div>
+		</div>
+
 		<Testimonials client:visible />
 		<FAQ client:visible />
 	</main>
