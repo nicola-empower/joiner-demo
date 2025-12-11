@@ -1,7 +1,13 @@
 import React from 'react';
 import { ShieldCheck, CheckCircle, CreditCard, Award } from 'lucide-react';
 
-const TrustBar = ({ theme = 'light' }) => {
+const defaultItems = [
+    { title: "SafeVerified", subtitle: "Accredited", icon: ShieldCheck, colorClass: "group-hover:text-green-600" },
+    { title: "TradeMaster", subtitle: "Guild Member", icon: Award, colorClass: "group-hover:text-yellow-500" },
+    { title: "CheckaPro", subtitle: "5 Star Rated", icon: CheckCircle, colorClass: "group-hover:text-blue-500" }
+];
+
+const TrustBar = ({ theme = 'light', items = defaultItems }) => {
     const isDark = theme === 'dark';
     const baseClass = isDark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-100";
     const textClass = isDark ? "text-gray-300" : "text-gray-600";
@@ -12,30 +18,15 @@ const TrustBar = ({ theme = 'light' }) => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-wrap justify-center md:justify-between items-center gap-8 opacity-80 hover:opacity-100 transition-opacity">
 
-                    {/* Mock Accreditation Logos using Icons */}
-                    <div className="flex items-center gap-2 group cursor-default">
-                        <ShieldCheck size={32} className={`${iconClass} group-hover:text-green-600 transition-colors`} />
-                        <div className="flex flex-col">
-                            <span className={`font-bold leading-tight ${textClass}`}>SafeVerified</span>
-                            <span className="text-[10px] uppercase tracking-wider text-gray-400">Accredited</span>
+                    {items.map((item, index) => (
+                        <div key={index} className="flex items-center gap-2 group cursor-default">
+                            {item.icon && <item.icon size={32} className={`${iconClass} ${item.colorClass} transition-colors`} />}
+                            <div className="flex flex-col">
+                                <span className={`font-bold leading-tight ${textClass}`}>{item.title}</span>
+                                <span className="text-[10px] uppercase tracking-wider text-gray-400">{item.subtitle}</span>
+                            </div>
                         </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 group cursor-default">
-                        <Award size={32} className={`${iconClass} group-hover:text-yellow-500 transition-colors`} />
-                        <div className="flex flex-col">
-                            <span className={`font-bold leading-tight ${textClass}`}>TradeMaster</span>
-                            <span className="text-[10px] uppercase tracking-wider text-gray-400">Guild Member</span>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 group cursor-default">
-                        <CheckCircle size={32} className={`${iconClass} group-hover:text-blue-500 transition-colors`} />
-                        <div className="flex flex-col">
-                            <span className={`font-bold leading-tight ${textClass}`}>CheckaPro</span>
-                            <span className="text-[10px] uppercase tracking-wider text-gray-400">5 Star Rated</span>
-                        </div>
-                    </div>
+                    ))}
 
                     {/* Payment Methods */}
                     <div className="flex items-center gap-4 border-l border-gray-200 pl-8 hidden md:flex">

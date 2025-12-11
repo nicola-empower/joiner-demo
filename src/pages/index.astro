@@ -3,193 +3,289 @@ import Layout from "../layouts/Layout.astro";
 import TrustBar from "../components/TrustBar.jsx";
 import Testimonials from "../components/Testimonials.jsx";
 import FAQ from "../components/FAQ.jsx";
-import ProjectTransformation from "../components/ProjectTransformation.jsx";
-import ProjectGallery from "../components/ProjectGallery.jsx";
 import FeatureSection from "../components/FeatureSection.jsx";
-import ServiceAreaMap from "../components/ServiceAreaMap.jsx";
 import ProcessFlow from "../components/ProcessFlow.jsx";
-import SafetyGuarantee from "../components/SafetyGuarantee.jsx";
+import {
+	Hammer,
+	Ruler,
+	Clock,
+	TreeDeciduous,
+	PenTool,
+	Home,
+	Award,
+} from "lucide-react";
+
+const philosophyFeatures = [
+	{
+		title: "Architectural Joinery",
+		desc: "Restoring sash windows, crafting grand staircases, and fitting period-correct paneling.",
+		icon: Home,
+	},
+	{
+		title: "Luxury Boot Rooms",
+		desc: "Functional spaces turned into design statements with bespoke cabinetry.",
+		icon: Ruler,
+	},
+	{
+		title: "Bespoke Kitchens",
+		desc: "Hand-painted, in-frame cabinetry designed specifically for your culinary workflow.",
+		icon: PenTool,
+	},
+];
 ---
 
-<Layout title="Oak & Chisel - Master Bespoke Joinery">
+<Layout title="Oak & Chisel | Bespoke Joinery & Fine Cabinetry">
 	<main class="relative isolate overflow-hidden bg-white">
 		<!-- Hero Section -->
 		<div class="relative h-screen w-full overflow-hidden">
 			<img
 				src="/hero.png"
-				alt="Fine woodworking craftsmanship background"
+				alt="Bespoke joinery workshop"
 				class="absolute inset-0 -z-10 h-full w-full object-cover object-center brightness-[0.4]"
 			/>
 
 			<div
 				class="mx-auto max-w-7xl px-6 lg:px-8 h-full flex flex-col justify-center relative z-10"
 			>
-				<div class="max-w-2xl animate-fade-in-up">
+				<div class="max-w-3xl animate-fade-in-up">
 					<div class="hidden sm:mb-8 sm:flex">
 						<div
-							class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-300 ring-1 ring-white/20 hover:ring-white/40 transition-all"
+							class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-300 ring-1 ring-white/20 hover:ring-white/40 transition-all uppercase tracking-wide font-semibold"
 						>
-							Handcrafted in our local workshop <a
-								href="#"
-								class="font-semibold text-accent"
-								><span
-									class="absolute inset-0"
-									aria-hidden="true"></span>Visit Us <span
-									aria-hidden="true">&rarr;</span
-								></a
-							>
+							Est. 1985 • Master Craftsmen
 						</div>
 					</div>
 					<h1
-						class="text-5xl font-bold tracking-tight text-white sm:text-7xl mb-6 drop-shadow-lg"
+						class="text-5xl font-header font-bold tracking-tight text-white sm:text-7xl mb-6 drop-shadow-xl"
 					>
-						Bespoke Joinery & <span class="text-accent"
-							>Fine Cabinetry</span
-						>
+						Bespoke Joinery <br />
+						<span class="text-amber-500">Handcrafted for You.</span>
 					</h1>
 					<p
-						class="mt-6 text-lg leading-8 text-gray-200 drop-shadow-md"
+						class="mt-6 text-xl leading-8 text-stone-200 drop-shadow-md max-w-2xl font-body"
 					>
-						Combining traditional techniques with modern precision.
-						We create custom furniture, staircases, and fitted
-						wardrobes designed to last a lifetime.
+						From custom kitchens to heritage window restoration. we
+						create solid wood masterpieces in our local workshop
+						that stand the test of time.
 					</p>
-					<div class="mt-10 flex items-center gap-x-6">
+					<div class="mt-10 flex flex-wrap items-center gap-6">
 						<a
-							href="#"
-							class="rounded-full bg-accent px-8 py-3.5 text-lg font-semibold text-white shadow-lg hover:bg-accent/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-all duration-300 scale-100 hover:scale-105"
+							href="#contact"
+							class="rounded-full bg-accent px-8 py-3.5 text-lg font-semibold text-white shadow-lg hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-all duration-300 scale-100 hover:scale-105"
 						>
-							Discuss Your Project
+							Discuss Your Commission
 						</a>
 						<a
-							href="#"
-							class="text-lg font-semibold leading-6 text-white hover:text-accent transition-colors"
+							href="/portfolio"
+							class="rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-8 py-3.5 text-lg font-semibold text-white hover:bg-white hover:text-primary transition-all duration-300"
 						>
-							Gallery <span aria-hidden="true">→</span>
+							View The Gallery <span aria-hidden="true">→</span>
 						</a>
-					</div>
-				</div>
-			</div>
-
-			<!-- Glassmorphism Stats -->
-			<div
-				class="absolute bottom-0 left-0 right-0 bg-white/5 backdrop-blur-md border-t border-white/10 py-8"
-			>
-				<div
-					class="mx-auto max-w-7xl px-6 lg:px-8 flex justify-around text-white text-center"
-				>
-					<div>
-						<div class="text-3xl font-bold text-accent">3rd</div>
-						<div class="text-sm text-gray-300">Generation</div>
-					</div>
-					<div>
-						<div class="text-3xl font-bold text-accent">100%</div>
-						<div class="text-sm text-gray-300">Bespoke</div>
-					</div>
-					<div>
-						<div class="text-3xl font-bold text-accent">
-							Lifetime
-						</div>
-						<div class="text-sm text-gray-300">Assurance</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="relative z-20 bg-white"><TrustBar client:visible /></div>
+		<!-- TrustBar (Heritage Stats) -->
+		<div class="relative z-20 bg-white">
+			<TrustBar
+				client:visible
+				items={[
+					{
+						title: "3rd Generation",
+						subtitle: "Family Tradition",
+						icon: TreeDeciduous,
+						colorClass: "text-amber-700",
+					},
+					{
+						title: "100% Bespoke",
+						subtitle: "No Templates",
+						icon: Ruler,
+						colorClass: "text-amber-600",
+					},
+					{
+						title: "Lifetime Assurance",
+						subtitle: "Quality Guaranteed",
+						icon: Award,
+						colorClass: "text-amber-500",
+					},
+				]}
+			/>
+		</div>
 
-		<!-- Services Feature Section -->
+		<!-- Philosophy Section -->
 		<FeatureSection
 			client:visible
-			title="Master Craftsmanship"
-			subtitle="Bespoke Joinery"
-			description="From custom staircases to heritage window restoration, we bring decades of experience to every cut, joint, and finish."
-			features={[
-				{
-					title: "Custom Furniture",
-					desc: "Built-in wardrobes, bookcases, and alcove units.",
-				},
-				{
-					title: "Architectural Joinery",
-					desc: "Staircases, doors, and heritage sash windows.",
-				},
-				{
-					title: "Kitchen Fitting",
-					desc: "Precision installation of luxury kitchen suites.",
-				},
-			]}
+			title="Master Craftsmanship, Local Roots."
+			subtitle="Our Philosophy"
+			description="True joinery is an art form. In our local workshop, we select every timber for its grain and character. Whether it’s American Walnut for a study or English Oak for a staircase, we treat the material with the reverence it deserves."
+			features={philosophyFeatures}
 			imageSrc="/hero.png"
-			quote="The level of detail in our new library shelves is simply astounding. It's the centerpiece of the room."
-			author="Mrs. H. Reynolds, Ely"
-			align="left"
+			align="right"
+			quote={null}
+			author={null}
 		/>
 
-		<!-- Visual Showcase Section -->
-		<div class="py-24 bg-white">
-			<div class="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col gap-20">
-				<!-- Feature 1: The Transformation -->
-				<div>
-					<div class="mb-10 text-center md:text-left">
-						<h3 class="text-2xl font-bold text-gray-900 mb-4">
-							Case Study: The Evening Garden
-						</h3>
-						<p class="text-gray-600 max-w-2xl">
-							See how we transformed a standard garden into a
-							luxury multi-level entertainment space, complete
-							with integrated lighting for evening hosting.
+		<!-- Feature Project: Cambridge Library -->
+		<div class="py-24 bg-stone-900 text-white relative overflow-hidden">
+			<div class="absolute inset-0 bg-black/40"></div>
+			<div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+				<div class="flex flex-col lg:flex-row gap-16 items-center">
+					<div class="lg:w-1/2">
+						<div
+							class="inline-block rounded-full bg-accent/20 px-4 py-1 text-sm font-semibold text-accent mb-6 border border-accent/20"
+						>
+							Case Study
+						</div>
+						<h2
+							class="text-4xl font-bold tracking-tight text-white mb-6"
+						>
+							The Cambridge Library
+						</h2>
+						<p class="text-xl text-gray-300 mb-8 font-light italic">
+							"From concept to evening ambience."
 						</p>
-					</div>
-					<ProjectTransformation client:visible />
-				</div>
 
-				<!-- Feature 2: Gallery Grid -->
-				<div>
-					<div class="mb-10 text-center md:text-left">
-						<h3 class="text-2xl font-bold text-gray-900 mb-4">
-							Recent Commission: Walk-in Wardrobe
-						</h3>
-						<p class="text-gray-600 max-w-2xl">
-							A fully bespoke dressing room fit-out featuring
-							floor-to-ceiling walnut cabinetry and soft-close
-							hardware.
-						</p>
+						<div class="space-y-6">
+							<div>
+								<h4
+									class="font-bold text-white text-lg font-serif"
+								>
+									The Brief
+								</h4>
+								<p class="text-gray-400">
+									The client requested a floor-to-ceiling
+									library, incorporating hidden storage and
+									integrated lighting.
+								</p>
+							</div>
+							<div>
+								<h4
+									class="font-bold text-white text-lg font-serif"
+								>
+									The Materials
+								</h4>
+								<p class="text-gray-400">
+									Solid Black Walnut with brass inlay
+									detailing for a sophisticated finish.
+								</p>
+							</div>
+							<div>
+								<h4
+									class="font-bold text-white text-lg font-serif"
+								>
+									The Result
+								</h4>
+								<p class="text-gray-400">
+									A sophisticated, quiet retreat that adds
+									both warmth and significant value to the
+									property.
+								</p>
+							</div>
+						</div>
+
+						<div class="mt-10">
+							<a
+								href="/portfolio"
+								class="text-white font-semibold border-b border-accent hover:text-accent transition-colors pb-1"
+								>See the Transformation &rarr;</a
+							>
+						</div>
 					</div>
-					<ProjectGallery client:visible />
+					<div class="lg:w-1/2">
+						<div
+							class="rounded-2xl overflow-hidden ring-1 ring-white/10 shadow-2xl"
+						>
+							<img
+								src="/hero.png"
+								alt="The Cambridge Library"
+								class="w-full h-auto object-cover hover:scale-105 transition-transform duration-700"
+							/>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 
-		<ProcessFlow client:visible />
+		<!-- Use ProcessFlow for "The Process" -->
+		<ProcessFlow
+			client:visible
+			title="A Curated Experience from Sketch to Install"
+			subtitle="The Journey"
+			steps={[
+				{
+					title: "Design Consultation",
+					desc: "We meet to measure, discuss materials, and understand your vision.",
+				},
+				{
+					title: "Detailed CAD Concepts",
+					desc: "You receive 3D visualizations and material samples to approve.",
+				},
+				{
+					title: "Workshop Crafting",
+					desc: "Your pieces are hand-built in our workshop, minimizing disruption.",
+				},
+				{
+					title: "White-Glove Installation",
+					desc: "Our team fits the joinery with millimetre precision and leaves no mess.",
+				},
+			]}
+		/>
 
-		<!-- Service Area Map Section -->
-		<div class="py-24 bg-white">
+		<Testimonials
+			client:visible
+			reviews={[
+				{
+					text: "The level of detail in our new library shelves is astounding. It is the centerpiece of the room. The team was respectful, tidy, and true artisans.",
+					author: "Mrs. H. Reynolds",
+					location: "Ely",
+					role: "Private Commission",
+					rating: 5,
+				},
+				{
+					text: "We looked at high-end kitchen brands, but Oak & Chisel offered better quality wood and a truly custom fit for a fairer price. The craftsmanship is flawless.",
+					author: "Jonathan K.",
+					location: "Saffron Walden",
+					role: "New Build Kitchen",
+					rating: 5,
+				},
+				{
+					text: "They restored our Victorian sash windows to their former glory. Draught-proof but historically accurate. A rare find.",
+					author: "Eleanor & Tom",
+					location: "Cambridge",
+					role: "Restoration",
+					rating: 5,
+				},
+			]}
+		/>
+
+		<!-- CTA Section -->
+		<div class="bg-gray-50 py-16 sm:py-24" id="contact">
 			<div class="mx-auto max-w-7xl px-6 lg:px-8">
-				<div class="mx-auto max-w-2xl text-center mb-16">
-					<h2 class="text-base font-semibold leading-7 text-accent">
-						Local Coverage
+				<div class="mx-auto max-w-2xl text-center">
+					<h2
+						class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl font-serif"
+					>
+						Let’s Create Something Beautiful.
 					</h2>
 					<p
-						class="mt-2 text-3xl font-bold tracking-tight text-primary sm:text-4xl"
+						class="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-600"
 					>
-						Serving Cambridge & East Anglia
+						We are currently booking commissions for next season.
+						Contact us to reserve your production slot in our
+						workshop.
 					</p>
-					<p class="mt-4 text-lg text-gray-500">
-						Expert joinery services across Ely, Newmarket, Saffron
-						Walden, and surrounding villages.
-					</p>
+					<div class="mt-10 flex justify-center gap-x-6">
+						<a
+							href="mailto:commissions@oakandchisel.co.uk"
+							class="rounded-full bg-accent px-8 py-3.5 text-lg font-semibold text-white shadow-lg hover:bg-accent/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-all"
+							>Request a Design Visit</a
+						>
+					</div>
 				</div>
-				<ServiceAreaMap
-					client:only="react"
-					center={[52.2053, 0.1218]}
-					city="Cambridge"
-					radiusMiles={20}
-				/>
 			</div>
 		</div>
 
-		<Testimonials client:visible />
-		<SafetyGuarantee client:visible />
 		<FAQ client:visible />
 	</main>
 </Layout>
-

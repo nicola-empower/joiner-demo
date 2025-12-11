@@ -1,0 +1,121 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const projects = [
+    {
+        title: "The Cambridge Library",
+        category: "Bespoke Joinery",
+        image: "/images/joiner-library.png",
+        desc: "Floor-to-ceiling Black Walnut library with brass inlays.",
+    },
+    {
+        title: "Manor House Kitchen",
+        category: "Kitchens",
+        image: "/images/joiner-kitchen-drawer.png",
+        desc: "Hand-painted in-frame cabinetry with solid oak internals.",
+    },
+    {
+        title: "Victorian Hallway",
+        category: "Heritage",
+        image: "/images/joiner-hallway.png",
+        desc: "Complete sash window and paneling restoration for a Grade II listed property.",
+    },
+];
+---
+
+<Layout title="Gallery | Oak & Chisel">
+    <main class="bg-gray-50">
+        <!-- Hero -->
+        <div
+            class="relative isolate overflow-hidden bg-stone-900 py-24 sm:py-32"
+        >
+            <img
+                src="/hero.png"
+                alt=""
+                class="absolute inset-0 -z-10 h-full w-full object-cover object-center brightness-25"
+            />
+            <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                <div class="mx-auto max-w-2xl lg:mx-0">
+                    <h1
+                        class="text-4xl font-bold tracking-tight text-white sm:text-6xl font-serif"
+                    >
+                        Our Portfolio
+                    </h1>
+                    <p class="mt-6 text-lg leading-8 text-gray-300">
+                        A showcase of bespoke commissions. Each piece is unique,
+                        designed to perfectly fit the home and the lifestyle of
+                        our client.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Grid -->
+        <div class="py-24 sm:py-32">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                <div
+                    class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+                >
+                    {
+                        projects.map((project) => (
+                            <article class="flex flex-col items-start justify-between group cursor-pointer">
+                                <div class="relative w-full">
+                                    <img
+                                        src={project.image}
+                                        alt={project.title}
+                                        class="aspect-video w-full rounded-2xl bg-gray-100 object-cover sm:aspect-2/1 lg:aspect-3/2 group-hover:opacity-90 transition-opacity ring-1 ring-gray-900/10"
+                                    />
+                                    <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
+                                </div>
+                                <div class="max-w-xl">
+                                    <div class="mt-8 flex items-center gap-x-4 text-xs">
+                                        <span class="relative z-10 rounded-full bg-white px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100 border border-gray-200">
+                                            {project.category}
+                                        </span>
+                                    </div>
+                                    <div class="group relative">
+                                        <h3 class="mt-3 text-xl font-semibold leading-6 text-gray-900 group-hover:text-amber-700 font-serif">
+                                            <a href="#">
+                                                <span class="absolute inset-0" />
+                                                {project.title}
+                                            </a>
+                                        </h3>
+                                        <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
+                                            {project.desc}
+                                        </p>
+                                    </div>
+                                </div>
+                            </article>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="bg-stone-100 py-16 sm:py-24 border-t border-stone-200">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                <div class="mx-auto max-w-2xl text-center">
+                    <h2
+                        class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl font-serif"
+                    >
+                        Inspired by our work?
+                    </h2>
+                    <p
+                        class="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-600"
+                    >
+                        Every commission starts with a conversation. Let's
+                        discuss your ideas.
+                    </p>
+                    <div class="mt-10 flex justify-center gap-x-6">
+                        <a
+                            href="mailto:commissions@oakandchisel.co.uk"
+                            class="rounded-full bg-accent px-8 py-3.5 text-lg font-semibold text-white shadow-lg hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-all"
+                            >Enquire Now</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</Layout>

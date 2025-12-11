@@ -1,23 +1,32 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Outfit', sans-serif;
-  --color-primary: #271c19;
-  /* Brown 900 (Dark Wood) */
-  --color-secondary: #5d4a41;
-  /* Brown 600 */
-  --color-accent: #d97706;
-  /* Amber 600 - Varnish/Gold */
-  --color-wood: #92400e;
-  /* Amber 800 - Oak */
+  --font-header: "Libre Baskerville", serif;
+  --font-body: "Source Sans Pro", sans-serif;
+
+  --color-accent: #92400e;
+  /* amber-800 */
+  --color-accent-hover: #78350f;
+  /* amber-900 */
+
+  --radius-button: 0.375rem;
+  /* rounded-md */
 }
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
+@layer utilities {
+  .font-header {
+    font-family: var(--font-header);
   }
 
-  body {
-    @apply bg-white text-primary antialiased selection:bg-accent/20 selection:text-white;
+  .font-body {
+    font-family: var(--font-body);
   }
+}
+
+/* Heritage Base Styles */
+body {
+  background-color: #fafaf9;
+  /* stone-50 */
+  color: #1c1917;
+  /* stone-900 */
 }

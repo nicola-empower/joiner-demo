@@ -1,0 +1,124 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Hammer, Ruler, PenTool, CheckCircle2 } from "lucide-react";
+---
+
+<Layout title="Services | Oak & Chisel Joinery">
+    <main class="bg-stone-50">
+        <!-- Header -->
+        <div class="bg-stone-900 py-24 sm:py-32">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                <div class="mx-auto max-w-2xl lg:mx-0">
+                    <h1
+                        class="text-4xl font-header font-bold tracking-tight text-white sm:text-6xl"
+                    >
+                        Master Craftsmanship
+                    </h1>
+                    <p class="mt-6 text-lg leading-8 text-stone-300 font-body">
+                        From bespoke kitchens to heritage restorations. We
+                        combine traditional joinery techniques with modern
+                        precision to create lasting beauty for your home.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- content -->
+        <div class="mx-auto max-w-7xl px-6 lg:px-8 py-24">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+                <!-- Kitchens -->
+                <div class="flex flex-col gap-6">
+                    <div
+                        class="h-16 w-16 bg-white border border-stone-200 rounded-lg flex items-center justify-center text-amber-800 mb-2 shadow-sm"
+                    >
+                        <Hammer size={32} />
+                    </div>
+                    <h3 class="text-3xl font-header font-bold text-stone-900">
+                        Bespoke Hand-Painted Kitchens
+                    </h3>
+                    <p class="text-stone-600 text-lg font-body">
+                        Why compromise with standard sizes? We craft solid wood,
+                        in-frame cabinetry designed to fit your room perfectly,
+                        down to the millimeter.
+                    </p>
+                    <ul class="space-y-3 text-stone-600 mt-4 font-body">
+                        <li class="flex gap-2">
+                            <div class="text-amber-700">•</div> Dovetail Drawers for
+                            strength and longevity
+                        </li>
+                        <li class="flex gap-2">
+                            <div class="text-amber-700">•</div> Custom larders and
+                            spice racks
+                        </li>
+                        <li class="flex gap-2">
+                            <div class="text-amber-700">•</div> Hand-painted in your
+                            chosen Farrow & Ball shade
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Windows -->
+                <div class="flex flex-col gap-6">
+                    <div
+                        class="h-16 w-16 bg-white border border-stone-200 rounded-lg flex items-center justify-center text-amber-800 mb-2 shadow-sm"
+                    >
+                        <Ruler size={32} />
+                    </div>
+                    <h3 class="text-3xl font-header font-bold text-stone-900">
+                        Heritage Window Restoration
+                    </h3>
+                    <p class="text-stone-600 text-lg font-body">
+                        Preserve the character of your period property. We
+                        restore rotten timber sash and casement windows,
+                        upgrading them with draught-proofing and slimline double
+                        glazing.
+                    </p>
+                    <ul class="space-y-3 text-stone-600 mt-4 font-body">
+                        <li class="flex gap-2">
+                            <div class="text-amber-700">•</div> Sash re-cording and
+                            balancing
+                        </li>
+                        <li class="flex gap-2">
+                            <div class="text-amber-700">•</div> Resin repair system
+                            for rot
+                        </li>
+                        <li class="flex gap-2">
+                            <div class="text-amber-700">•</div> Custom molding matching
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Wardrobes -->
+                <div class="flex flex-col gap-6">
+                    <div
+                        class="h-16 w-16 bg-white border border-stone-200 rounded-lg flex items-center justify-center text-amber-800 mb-2 shadow-sm"
+                    >
+                        <PenTool size={32} />
+                    </div>
+                    <h3 class="text-3xl font-header font-bold text-stone-900">
+                        Fitted Wardrobes & Libraries
+                    </h3>
+                    <p class="text-stone-600 text-lg font-body">
+                        Maximize your storage with floor-to-ceiling joinery.
+                        From walk-in dressing rooms to alcove bookcases, we turn
+                        awkward spaces into elegant features.
+                    </p>
+                    <ul class="space-y-3 text-stone-600 mt-4 font-body">
+                        <li class="flex gap-2">
+                            <div class="text-amber-700">•</div> Soft-close drawers
+                            and integrated lighting
+                        </li>
+                        <li class="flex gap-2">
+                            <div class="text-amber-700">•</div> Tailored internal
+                            configuration
+                        </li>
+                        <li class="flex gap-2">
+                            <div class="text-amber-700">•</div> Oak, Walnut, Ash,
+                            or Spray-finished options
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+</Layout>

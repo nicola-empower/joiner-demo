@@ -1,50 +1,35 @@
 import React from 'react';
-import { Phone, ClipboardCheck, Wrench, ThumbsUp } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
-const steps = [
-    {
-        title: 'Consultation',
-        desc: 'We discuss your needs and assess the work required.',
-        icon: Phone,
-    },
-    {
-        title: 'Fixed Quote',
-        desc: 'You get a clear, detailed price. No hidden fees.',
-        icon: ClipboardCheck,
-    },
-    {
-        title: 'Execution',
-        desc: 'Our certified team completes the work to the highest standard.',
-        icon: Wrench,
-    },
-    {
-        title: 'Sign-Off',
-        desc: 'We inspect the work together to ensure you are 100% satisfied.',
-        icon: ThumbsUp,
-    },
-];
-
-const ProcessFlow = () => {
+const ProcessFlow = ({
+    title = "How It Works",
+    subtitle = "Our Process",
+    steps = [
+        { title: "Consultation", desc: "We discuss your needs and assess the property." },
+        { title: "Quote", desc: "You receive a fixed-price detailed proposal." },
+        { title: "Scheduling", desc: "We agree on a start date that suits you." },
+        { title: "Completion", desc: "Work is completed to standard and signed off." }
+    ]
+}) => {
     return (
         <div className="py-24 bg-white">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <div className="mx-auto max-w-2xl text-center mb-16">
-                    <h2 className="text-base font-semibold leading-7 text-accent">Our Process</h2>
+                    <h2 className="text-base font-semibold leading-7 text-accent">{subtitle}</h2>
                     <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                        Simple, Stress-Free Service
+                        {title}
                     </p>
                 </div>
-
                 <div className="mx-auto grid max-w-2xl grid-cols-1 gap-8 overflow-hidden lg:mx-0 lg:max-w-none lg:grid-cols-4">
                     {steps.map((step, stepIdx) => (
-                        <div key={step.title} class="relative">
-                            <div class="flex flex-col items-center text-center">
-                                <div class="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-white shadow-lg mb-6">
-                                    <step.icon size={32} />
+                        <div key={step.title} className="relative pl-9">
+                            <dt className="inline font-semibold text-gray-900">
+                                <div className="absolute left-0 top-1 h-5 w-5 text-accent">
+                                    <CheckCircle2 size={20} />
                                 </div>
-                                <h3 class="text-lg font-bold leading-8 text-gray-900">{step.title}</h3>
-                                <p class="mt-2 text-base leading-7 text-gray-500">{step.desc}</p>
-                            </div>
+                                {step.title}
+                            </dt>
+                            <dd className="mt-2 text-base leading-7 text-gray-600">{step.desc}</dd>
                         </div>
                     ))}
                 </div>
