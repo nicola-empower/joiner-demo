@@ -29,7 +29,7 @@ const ServiceAreaMap = ({ center = [51.505, -0.09], city = "London", radiusMiles
                 <Circle
                     center={center}
                     radius={radiusMeters}
-                    pathOptions={{ color: 'var(--color-primary)', fillColor: 'var(--color-accent)', fillOpacity: 0.2 }}
+                    pathOptions={{ color: '#0f172a', fillColor: 'var(--color-accent)', fillOpacity: 0.2 }}
                 >
                     <Popup>
                         We serve {city} and a {radiusMiles} mile radius.

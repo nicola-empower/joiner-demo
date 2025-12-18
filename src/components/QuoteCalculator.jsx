@@ -96,15 +96,15 @@ const QuoteCalculator = () => {
       'Client Name', 'Materials Cost', 'Labour Hours', 'Hourly Rate', 'Profit Margin (%)',
       'Labour Cost', 'Total Cost', 'Profit Amount', 'Final Quote (ex VAT)', 'VAT', 'Total (inc VAT)'
     ];
-    
+
     const rows = quotes.map(q => [
       `"${q.clientName}"`, q.materialsCost, q.labourHours, q.hourlyRate, q.profitMargin,
       q.labourCost.toFixed(2), q.totalCost.toFixed(2), q.profitAmount.toFixed(2),
       q.finalQuote.toFixed(2), q.vatAmount.toFixed(2), q.totalQuoteVat.toFixed(2)
     ]);
 
-    const csvContent = "data:text/csv;charset=utf-8," 
-      + headers.join(",") + "\n" 
+    const csvContent = "data:text/csv;charset=utf-8,"
+      + headers.join(",") + "\n"
       + rows.map(e => e.join(",")).join("\n");
 
     const encodedUri = encodeURI(csvContent);
@@ -125,11 +125,11 @@ const QuoteCalculator = () => {
         <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 sticky top-8 border border-gray-100">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-3 bg-accent/10 rounded-full text-accent">
-                <Plus size={24} />
+              <Plus size={24} />
             </div>
             <h2 className="text-2xl font-bold text-gray-900">New Estimate</h2>
           </div>
-          
+
           <form onSubmit={calculateQuote} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Client Name</label>
@@ -143,66 +143,66 @@ const QuoteCalculator = () => {
                 required
               />
             </div>
-            
+
             <div className="grid grid-cols-2 gap-5">
-                <div>
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Materials (£)</label>
                 <input
-                    type="number"
-                    name="materialsCost"
-                    value={formData.materialsCost}
-                    onChange={handleInputChange}
-                    min="0"
-                    step="0.01"
-                    className="block w-full px-4 py-3 bg-gray-50 border-transparent rounded-xl focus:border-accent focus:bg-white focus:ring-0 transition-colors"
-                    placeholder="0.00"
-                    required
+                  type="number"
+                  name="materialsCost"
+                  value={formData.materialsCost}
+                  onChange={handleInputChange}
+                  min="0"
+                  step="0.01"
+                  className="block w-full px-4 py-3 bg-gray-50 border-transparent rounded-xl focus:border-accent focus:bg-white focus:ring-0 transition-colors"
+                  placeholder="0.00"
+                  required
                 />
-                </div>
-                <div>
+              </div>
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Hours</label>
                 <input
-                    type="number"
-                    name="labourHours"
-                    value={formData.labourHours}
-                    onChange={handleInputChange}
-                    min="0"
-                    step="0.5"
-                    className="block w-full px-4 py-3 bg-gray-50 border-transparent rounded-xl focus:border-accent focus:bg-white focus:ring-0 transition-colors"
-                    placeholder="0"
-                    required
+                  type="number"
+                  name="labourHours"
+                  value={formData.labourHours}
+                  onChange={handleInputChange}
+                  min="0"
+                  step="0.5"
+                  className="block w-full px-4 py-3 bg-gray-50 border-transparent rounded-xl focus:border-accent focus:bg-white focus:ring-0 transition-colors"
+                  placeholder="0"
+                  required
                 />
-                </div>
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-5">
-                <div>
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Rate (£/hr)</label>
                 <input
-                    type="number"
-                    name="hourlyRate"
-                    value={formData.hourlyRate}
-                    onChange={handleInputChange}
-                    min="0"
-                    step="0.01"
-                    className="block w-full px-4 py-3 bg-gray-50 border-transparent rounded-xl focus:border-accent focus:bg-white focus:ring-0 transition-colors"
-                    placeholder="45.00"
-                    required
+                  type="number"
+                  name="hourlyRate"
+                  value={formData.hourlyRate}
+                  onChange={handleInputChange}
+                  min="0"
+                  step="0.01"
+                  className="block w-full px-4 py-3 bg-gray-50 border-transparent rounded-xl focus:border-accent focus:bg-white focus:ring-0 transition-colors"
+                  placeholder="45.00"
+                  required
                 />
-                </div>
-                <div>
+              </div>
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Margin (%)</label>
                 <input
-                    type="number"
-                    name="profitMargin"
-                    value={formData.profitMargin}
-                    onChange={handleInputChange}
-                    min="0"
-                    className="block w-full px-4 py-3 bg-gray-50 border-transparent rounded-xl focus:border-accent focus:bg-white focus:ring-0 transition-colors"
-                    placeholder="20"
-                    required
+                  type="number"
+                  name="profitMargin"
+                  value={formData.profitMargin}
+                  onChange={handleInputChange}
+                  min="0"
+                  className="block w-full px-4 py-3 bg-gray-50 border-transparent rounded-xl focus:border-accent focus:bg-white focus:ring-0 transition-colors"
+                  placeholder="20"
+                  required
                 />
-                </div>
+              </div>
             </div>
 
             <button
@@ -219,20 +219,20 @@ const QuoteCalculator = () => {
       <div className="lg:col-span-2">
         <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100 h-full">
           <div className="flex flex-wrap justify-between items-center mb-8 gap-4">
-             <div className="flex items-center gap-3">
-                <div className="p-3 bg-primary/10 rounded-full text-primary">
-                    <LayoutDashboard size={24} />
-                </div>
-                <h2 className="text-2xl font-bold text-gray-900">Active Quotes</h2>
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-slate-900/10 rounded-full text-slate-900">
+                <LayoutDashboard size={24} />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900">Active Quotes</h2>
             </div>
             {quotes.length > 0 && (
-                <button
+              <button
                 onClick={exportCSV}
-                className="flex items-center gap-2 py-2 px-5 border-2 border-primary/10 text-primary font-semibold rounded-full hover:bg-primary hover:text-white transition-all"
-                >
+                className="flex items-center gap-2 py-2 px-5 border-2 border-slate-900/10 text-slate-900 font-semibold rounded-full hover:bg-slate-900 hover:text-white transition-all"
+              >
                 <Download size={18} />
                 Export CSV
-                </button>
+              </button>
             )}
           </div>
 
@@ -246,29 +246,29 @@ const QuoteCalculator = () => {
               <table className="min-w-full divide-y divide-gray-100">
                 <thead>
                   <tr>
-                    <th 
-                        onClick={() => requestSort('clientName')}
-                        className="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-accent"
+                    <th
+                      onClick={() => requestSort('clientName')}
+                      className="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-accent"
                     >
-                        Client
+                      Client
                     </th>
-                    <th 
-                        onClick={() => requestSort('labourHours')}
-                        className="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-accent"
+                    <th
+                      onClick={() => requestSort('labourHours')}
+                      className="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-accent"
                     >
-                        Hours
+                      Hours
                     </th>
-                    <th 
-                        onClick={() => requestSort('profitAmount')}
-                        className="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-accent"
+                    <th
+                      onClick={() => requestSort('profitAmount')}
+                      className="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-accent"
                     >
-                        Profit
+                      Profit
                     </th>
-                    <th 
-                        onClick={() => requestSort('totalQuoteVat')}
-                        className="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-accent"
+                    <th
+                      onClick={() => requestSort('totalQuoteVat')}
+                      className="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-accent"
                     >
-                        Total (Inc VAT)
+                      Total (Inc VAT)
                     </th>
                     <th className="px-4 py-3"></th>
                   </tr>

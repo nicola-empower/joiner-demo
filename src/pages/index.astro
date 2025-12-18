@@ -5,6 +5,7 @@ import Testimonials from "../components/Testimonials.jsx";
 import FAQ from "../components/FAQ.jsx";
 import FeatureSection from "../components/FeatureSection.jsx";
 import ProcessFlow from "../components/ProcessFlow.jsx";
+import ServiceAreaMap from "../components/ServiceAreaMap.jsx";
 import {
 	Hammer,
 	Ruler,
@@ -231,6 +232,32 @@ const philosophyFeatures = [
 				},
 			]}
 		/>
+
+		<!-- Service Area Map Section -->
+		<div class="py-24 bg-white relative">
+			<div class="mx-auto max-w-7xl px-6 lg:px-8">
+				<div class="mx-auto max-w-2xl text-center mb-16">
+					<h2 class="text-base font-semibold leading-7 text-accent">
+						Local Coverage
+					</h2>
+					<p
+						class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"
+					>
+						Serving Cambridge & Beyond
+					</p>
+					<p class="mt-4 text-lg text-gray-500">
+						Providing bespoke joinery across Cambridge, Ely, and the
+						surrounding villages.
+					</p>
+				</div>
+				<ServiceAreaMap
+					client:only="react"
+					center={[52.2053, 0.1218]}
+					city="Cambridge"
+					radiusMiles={25}
+				/>
+			</div>
+		</div>
 
 		<Testimonials
 			client:visible
