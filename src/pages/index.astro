@@ -16,6 +16,11 @@ import {
 	Award,
 } from "lucide-react";
 
+import ServicesGrid from "../components/ServicesGrid.jsx";
+import ProjectTransformation from "../components/ProjectTransformation.jsx";
+import ProjectGallery from "../components/ProjectGallery.jsx";
+import SocialGrid from "../components/SocialGrid.jsx";
+
 const philosophyFeatures = [
 	{
 		title: "Architectural Joinery",
@@ -114,6 +119,9 @@ const philosophyFeatures = [
 			/>
 		</div>
 
+		<!-- Services Grid -->
+		<ServicesGrid client:visible />
+
 		<!-- Philosophy Section -->
 		<FeatureSection
 			client:visible
@@ -194,15 +202,7 @@ const philosophyFeatures = [
 						</div>
 					</div>
 					<div class="lg:w-1/2">
-						<div
-							class="rounded-2xl overflow-hidden ring-1 ring-white/10 shadow-2xl"
-						>
-							<img
-								src="/hero.png"
-								alt="The Cambridge Library"
-								class="w-full h-auto object-cover hover:scale-105 transition-transform duration-700"
-							/>
-						</div>
+						<ProjectTransformation client:visible />
 					</div>
 				</div>
 			</div>
@@ -232,6 +232,30 @@ const philosophyFeatures = [
 				},
 			]}
 		/>
+
+		<!-- Portfolio Preview -->
+		<div class="py-24 bg-stone-50">
+			<div class="mx-auto max-w-7xl px-6 lg:px-8">
+				<div class="text-center mb-16">
+					<h2
+						class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"
+					>
+						Recent Commissions
+					</h2>
+					<p class="mt-4 text-gray-500">
+						A glimpse into our latest bespoke projects.
+					</p>
+				</div>
+				<ProjectGallery client:visible />
+				<div class="mt-12 text-center">
+					<a
+						href="/portfolio"
+						class="text-accent font-semibold hover:text-amber-700 transition-colors"
+						>View Full Portfolio &rarr;</a
+					>
+				</div>
+			</div>
+		</div>
 
 		<!-- Service Area Map Section -->
 		<div class="py-24 bg-white relative">
@@ -286,6 +310,8 @@ const philosophyFeatures = [
 			]}
 		/>
 
+		<SocialGrid client:visible />
+
 		<!-- CTA Section -->
 		<div class="bg-gray-50 py-16 sm:py-24" id="contact">
 			<div class="mx-auto max-w-7xl px-6 lg:px-8">
@@ -305,7 +331,7 @@ const philosophyFeatures = [
 					<div class="mt-10 flex justify-center gap-x-6">
 						<a
 							href="mailto:commissions@oakandchisel.co.uk"
-							class="rounded-full bg-accent px-8 py-3.5 text-lg font-semibold text-white shadow-lg hover:bg-accent/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-all"
+							class="rounded-full bg-accent px-8 py-3.5 text-lg font-semibold text-white shadow-lg hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-all"
 							>Request a Design Visit</a
 						>
 					</div>

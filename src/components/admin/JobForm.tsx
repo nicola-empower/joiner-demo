@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
-import { MOCK_TRADES, Job } from '@/lib/constants';
+import { MOCK_TRADES, type Job } from '@/lib/constants';
 
 interface JobFormProps {
     onAddJob: (newJob: Omit<Job, 'id' | 'status'>) => void;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { MapPin, Clock, Briefcase, CheckCircle } from 'lucide-react';
-import { Job } from '@/lib/constants';
+import type { Job } from '@/lib/constants';
 import { formatTime } from '@/lib/utils';
 
 interface JobCardProps {

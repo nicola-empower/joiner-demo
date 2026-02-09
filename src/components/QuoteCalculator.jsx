@@ -1,312 +1,416 @@
 import React, { useState, useEffect } from 'react';
-import { Download, Trash2, TrendingUp, TrendingDown, Plus, LayoutDashboard } from 'lucide-react';
+import { Plus, Trash2, ShoppingCart, FileText, Package } from 'lucide-react';
 
 const QuoteCalculator = () => {
-  const [quotes, setQuotes] = useState([]);
-  const [sortConfig, setSortConfig] = useState({ key: 'clientName', direction: 'asc' });
-  const [formData, setFormData] = useState({
-    clientName: '',
-    materialsCost: '',
-    labourHours: '',
-    hourlyRate: '',
-    profitMargin: ''
-  });
+    const [activeTab, setActiveTab] = useState('quotes');
+    const [quotes, setQuotes] = useState([]);
+    const [materials, setMaterials] = useState([]);
+    
+    // Quote Form State
+    const [formData, setFormData] = useState({
+        clientName: '',
+        materialsCost: '',
+        labourUnits: '',
+        labourType: 'days',
+        labourRate: '250',
+        profitMargin: '20',
+        manualTotal: ''
+    });
 
-  // Load quotes from local storage on mount
-  useEffect(() => {
-    const savedQuotes = localStorage.getItem('trade_quotes');
-    if (savedQuotes) {
-      setQuotes(JSON.parse(savedQuotes));
-    }
-  }, []);
+    // Material Form State
+    const [matQty, setMatQty] = useState('');
+    const [matDesc, setMatDesc] = useState('');
 
-  // Save quotes to local storage whenever they change
-  useEffect(() => {
-    localStorage.setItem('trade_quotes', JSON.stringify(quotes));
-  }, [quotes]);
+    // Load from local storage
+    useEffect(() => {
+        const savedQuotes = localStorage.getItem('trade_quotes');
+        const savedMaterials = localStorage.getItem('trade_materials');
+        if (savedQuotes) setQuotes(JSON.parse(savedQuotes));
+        if (savedMaterials) setMaterials(JSON.parse(savedMaterials));
+    }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+    // Save to local storage
+    useEffect(() => {
+        localStorage.setItem('trade_quotes', JSON.stringify(quotes));
+    }, [quotes]);
+    
+    useEffect(() => {
+        localStorage.setItem('trade_materials', JSON.stringify(materials));
+    }, [materials]);
 
-  const calculateQuote = (e) => {
-    e.preventDefault();
-    const materials = parseFloat(formData.materialsCost) || 0;
-    const hours = parseFloat(formData.labourHours) || 0;
-    const rate = parseFloat(formData.hourlyRate) || 0;
-    const margin = parseFloat(formData.profitMargin) || 0;
+    const handleQuoteSubmit = (e) => {
+        e.preventDefault();
+        const matCost = parseFloat(formData.materialsCost) || 0;
+        const units = parseFloat(formData.labourUnits) || 0;
+        const rate = parseFloat(formData.labourRate) || 0;
+        const margin = parseFloat(formData.profitMargin) || 0;
+        const manual = parseFloat(formData.manualTotal);
 
-    const labourCost = hours * rate;
-    const totalCost = materials + labourCost;
-    const profitAmount = totalCost * (margin / 100);
-    const finalQuote = totalCost + profitAmount;
-    const vatAmount = finalQuote * 0.20;
-    const totalQuoteVat = finalQuote + vatAmount;
+        let netTotal;
+        if (!isNaN(manual) && manual > 0) {
+            netTotal = manual;
+        } else {
+            const sub = matCost + (units * rate);
+            netTotal = sub + (sub * (margin / 100));
+        }
 
-    const newQuote = {
-      id: Date.now(),
-      ...formData,
-      materialsCost: materials,
-      labourHours: hours,
-      hourlyRate: rate,
-      profitMargin: margin,
-      labourCost,
-      totalCost,
-      profitAmount,
-      finalQuote,
-      vatAmount,
-      totalQuoteVat
+        const newQuote = {
+            id: Date.now(),
+            client: formData.clientName,
+            grandTotal: netTotal * 1.2, // Applying 20% VAT logic from original snippet implicitly or explicitly? Snippet had * 1.2 in logic.
+            matCost,
+            labour: units * rate
+        };
+
+        setQuotes(prev => [newQuote, ...prev]);
+        
+        // Reset form but keep default rate/margin
+        setFormData({
+            clientName: '',
+            materialsCost: '',
+            labourUnits: '',
+            labourType: 'days',
+            labourRate: '250',
+            profitMargin: '20',
+            manualTotal: ''
+        });
     };
 
-    setQuotes(prev => [...prev, newQuote]);
-    setFormData({
-      clientName: '',
-      materialsCost: '',
-      labourHours: '',
-      hourlyRate: '',
-      profitMargin: ''
-    });
-  };
+    const handleAddMaterial = () => {
+        if (!matDesc) return;
+        setMaterials(prev => [...prev, { id: Date.now(), qty: matQty || '-', desc: matDesc }]);
+        setMatQty('');
+        setMatDesc('');
+    };
 
-  const deleteQuote = (id) => {
-    setQuotes(prev => prev.filter(q => q.id !== id));
-  };
+    const quickAddMaterial = (item) => {
+        setMatDesc(item);
+        // Focus logic would ideally go here, but React state update is async.
+        // We can leave focus for now or use a ref.
+    };
 
-  const requestSort = (key) => {
-    let direction = 'asc';
-    if (sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc';
-    }
-    setSortConfig({ key, direction });
-  };
+    const formatGBP = (val) => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(val);
+    const totalPipeline = quotes.reduce((acc, q) => acc + q.grandTotal, 0);
 
-  const sortedQuotes = [...quotes].sort((a, b) => {
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? -1 : 1;
-    }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? 1 : -1;
-    }
-    return 0;
-  });
-
-  const exportCSV = () => {
-    const headers = [
-      'Client Name', 'Materials Cost', 'Labour Hours', 'Hourly Rate', 'Profit Margin (%)',
-      'Labour Cost', 'Total Cost', 'Profit Amount', 'Final Quote (ex VAT)', 'VAT', 'Total (inc VAT)'
-    ];
-
-    const rows = quotes.map(q => [
-      `"${q.clientName}"`, q.materialsCost, q.labourHours, q.hourlyRate, q.profitMargin,
-      q.labourCost.toFixed(2), q.totalCost.toFixed(2), q.profitAmount.toFixed(2),
-      q.finalQuote.toFixed(2), q.vatAmount.toFixed(2), q.totalQuoteVat.toFixed(2)
-    ]);
-
-    const csvContent = "data:text/csv;charset=utf-8,"
-      + headers.join(",") + "\n"
-      + rows.map(e => e.join(",")).join("\n");
-
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "quote_command_export.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  const formatCurrency = (val) => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(val);
-
-  return (
-    <div className="grid lg:grid-cols-3 gap-8">
-      {/* Input Form */}
-      <div className="lg:col-span-1">
-        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 sticky top-8 border border-gray-100">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-3 bg-accent/10 rounded-full text-accent">
-              <Plus size={24} />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900">New Estimate</h2>
-          </div>
-
-          <form onSubmit={calculateQuote} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Client Name</label>
-              <input
-                type="text"
-                name="clientName"
-                value={formData.clientName}
-                onChange={handleInputChange}
-                className="block w-full px-4 py-3 bg-gray-50 border-transparent rounded-xl focus:border-accent focus:bg-white focus:ring-0 transition-colors"
-                placeholder="e.g. Smith Residence"
-                required
-              />
+    return (
+        <div className="font-sans text-slate-800">
+            {/* PRINT HEADER */}
+            <div className="print-only p-8 border-b-2 border-slate-900 mb-8">
+                <div className="flex justify-between items-end">
+                    <div>
+                        <h1 className="text-3xl font-bold uppercase tracking-tighter">Materials Order</h1>
+                        <p className="text-slate-500">{new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                    </div>
+                    <div className="text-right text-xs text-slate-400">
+                        Joinery Quote Command
+                    </div>
+                </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-5">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Materials (£)</label>
-                <input
-                  type="number"
-                  name="materialsCost"
-                  value={formData.materialsCost}
-                  onChange={handleInputChange}
-                  min="0"
-                  step="0.01"
-                  className="block w-full px-4 py-3 bg-gray-50 border-transparent rounded-xl focus:border-accent focus:bg-white focus:ring-0 transition-colors"
-                  placeholder="0.00"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Hours</label>
-                <input
-                  type="number"
-                  name="labourHours"
-                  value={formData.labourHours}
-                  onChange={handleInputChange}
-                  min="0"
-                  step="0.5"
-                  className="block w-full px-4 py-3 bg-gray-50 border-transparent rounded-xl focus:border-accent focus:bg-white focus:ring-0 transition-colors"
-                  placeholder="0"
-                  required
-                />
-              </div>
+            <div className="no-print">
+                {/* HEADER */}
+                <header className="bg-slate-900 text-white pt-10 pb-20 px-6 rounded-b-[2rem] shadow-2xl relative overflow-hidden z-0 mb-8">
+                    <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end relative z-10 gap-6">
+                        <div>
+                            <h1 className="text-3xl md:text-4xl font-[Space_Grotesk] font-bold text-white mb-1">Quote Command</h1>
+                            <div className="flex gap-4 mt-4">
+                                <button 
+                                    onClick={() => setActiveTab('quotes')}
+                                    className={`pb-2 px-1 font-bold text-sm uppercase tracking-wider transition-all border-b-2 ${activeTab === 'quotes' ? 'border-blue-500 text-blue-500' : 'border-transparent text-slate-400 hover:text-white'}`}
+                                >
+                                    Quotes & Profit
+                                </button>
+                                <button 
+                                    onClick={() => setActiveTab('materials')}
+                                    className={`pb-2 px-1 font-bold text-sm uppercase tracking-wider transition-all border-b-2 ${activeTab === 'materials' ? 'border-blue-500 text-blue-500' : 'border-transparent text-slate-400 hover:text-white'}`}
+                                >
+                                    Materials List
+                                </button>
+                            </div>
+                        </div>
+                        <div className="text-left md:text-right">
+                            <div className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Total Pipeline</div>
+                            <div className="text-3xl font-[Space_Grotesk] font-bold text-cyan-500">{formatGBP(totalPipeline)}</div>
+                        </div>
+                    </div>
+                </header>
+
+                {/* MAIN CONTENT */}
+                <main className="relative z-20 max-w-7xl mx-auto px-4 -mt-20 w-full pb-12">
+                    
+                    {/* QUOTES TAB */}
+                    {activeTab === 'quotes' && (
+                        <div className="grid lg:grid-cols-12 gap-8">
+                            <div className="lg:col-span-5 space-y-6">
+                                <div className="bg-white/95 border border-white/20 shadow-xl rounded-2xl p-6 backdrop-blur-sm">
+                                    <form onSubmit={handleQuoteSubmit} className="space-y-4">
+                                        <div>
+                                            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Client Reference</label>
+                                            <input 
+                                                type="text" 
+                                                value={formData.clientName}
+                                                onChange={(e) => setFormData({...formData, clientName: e.target.value})}
+                                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-500" 
+                                                placeholder="e.g. Garden Office Reno" 
+                                                required 
+                                            />
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Materials (£)</label>
+                                                <input 
+                                                    type="number" 
+                                                    value={formData.materialsCost}
+                                                    onChange={(e) => setFormData({...formData, materialsCost: e.target.value})}
+                                                    step="0.01" 
+                                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none" 
+                                                    placeholder="0.00" 
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Labour Qty</label>
+                                                <div className="flex gap-1">
+                                                    <input 
+                                                        type="number" 
+                                                        value={formData.labourUnits}
+                                                        onChange={(e) => setFormData({...formData, labourUnits: e.target.value})}
+                                                        step="0.5" 
+                                                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none" 
+                                                        placeholder="Qty" 
+                                                    />
+                                                    <select 
+                                                        value={formData.labourType}
+                                                        onChange={(e) => setFormData({...formData, labourType: e.target.value})}
+                                                        className="bg-slate-50 border border-slate-200 rounded-xl text-[10px] font-bold px-2"
+                                                    >
+                                                        <option value="days">Days</option>
+                                                        <option value="hrs">Hrs</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Rate (£)</label>
+                                                <input 
+                                                    type="number" 
+                                                    value={formData.labourRate}
+                                                    onChange={(e) => setFormData({...formData, labourRate: e.target.value})}
+                                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none" 
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Margin (%)</label>
+                                                <input 
+                                                    type="number" 
+                                                    value={formData.profitMargin}
+                                                    onChange={(e) => setFormData({...formData, profitMargin: e.target.value})}
+                                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none" 
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="pt-2 border-t border-slate-100">
+                                            <label className="block text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-1">Manual Total Override (Ex VAT)</label>
+                                            <input 
+                                                type="number" 
+                                                value={formData.manualTotal}
+                                                onChange={(e) => setFormData({...formData, manualTotal: e.target.value})}
+                                                className="w-full px-4 py-3 bg-blue-50 border border-blue-100 rounded-xl focus:outline-none font-bold" 
+                                                placeholder="Optional round number" 
+                                            />
+                                        </div>
+                                        <button type="submit" className="w-full bg-blue-500 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-600 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                            <Plus size={20} /> Add to Pipeline
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div className="lg:col-span-7 space-y-6">
+                                <div className="bg-white/95 border border-white/20 shadow-xl rounded-2xl p-6 backdrop-blur-sm overflow-x-auto min-h-[400px]">
+                                    <table className="w-full text-sm">
+                                        <thead>
+                                            <tr className="text-[10px] uppercase text-slate-400 font-bold border-b border-slate-100">
+                                                <th className="pb-4 text-left">Job</th>
+                                                <th className="pb-4 text-right">Costs</th>
+                                                <th className="pb-4 text-right">Total (Inc VAT)</th>
+                                                <th className="pb-4"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-50">
+                                            {quotes.map(q => (
+                                                <tr key={q.id} className="hover:bg-slate-50 transition-colors">
+                                                    <td className="py-4 font-bold text-slate-700">{q.client}</td>
+                                                    <td className="py-4 text-right text-slate-400 font-mono text-xs">£{(q.matCost + q.labour).toFixed(2)}</td>
+                                                    <td className="py-4 text-right font-[Space_Grotesk] font-bold text-slate-900">{formatGBP(q.grandTotal)}</td>
+                                                    <td className="py-4 text-right">
+                                                        <button 
+                                                            onClick={() => setQuotes(quotes.filter(i => i.id !== q.id))}
+                                                            className="text-slate-200 hover:text-red-400 p-2"
+                                                        >
+                                                            <Trash2 size={16} />
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {quotes.length === 0 && (
+                                                <tr>
+                                                    <td colSpan="4" className="py-12 text-center text-slate-400 text-xs uppercase tracking-widest">
+                                                        No Active Quotes
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* MATERIALS TAB */}
+                    {activeTab === 'materials' && (
+                        <div className="grid lg:grid-cols-12 gap-8">
+                            <div className="lg:col-span-5 space-y-6">
+                                <div className="bg-white/95 border border-white/20 shadow-xl rounded-2xl p-6 backdrop-blur-sm">
+                                    <h2 className="font-[Space_Grotesk] font-bold text-xl mb-4 flex items-center gap-2">
+                                        <ShoppingCart className="text-cyan-500" /> Shop List
+                                    </h2>
+                                    
+                                    <div className="space-y-4">
+                                        <div className="flex gap-2">
+                                            <input 
+                                                type="number" 
+                                                value={matQty} 
+                                                onChange={(e) => setMatQty(e.target.value)}
+                                                className="w-20 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none" 
+                                                placeholder="Qty" 
+                                            />
+                                            <input 
+                                                type="text" 
+                                                value={matDesc}
+                                                onChange={(e) => setMatDesc(e.target.value)}
+                                                className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none" 
+                                                placeholder="Item description..." 
+                                            />
+                                            <button 
+                                                onClick={handleAddMaterial}
+                                                className="bg-slate-900 text-white p-3 rounded-xl hover:bg-slate-800 transition-all cursor-pointer"
+                                            >
+                                                <Plus size={24} />
+                                            </button>
+                                        </div>
+
+                                        <div className="space-y-6 mt-6 max-h-[400px] overflow-y-auto pr-2">
+                                            <div>
+                                                <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 border-b border-slate-100 pb-1">Timber & Sheets</span>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {['4x2 Treated', '6x2 Treated', '18mm OSB', '9mm OSB', '12.5mm P/B', 'Loglap'].map(item => (
+                                                        <button 
+                                                            key={item} 
+                                                            onClick={() => quickAddMaterial(item)}
+                                                            className="px-2 py-1.5 bg-slate-100 hover:bg-blue-100 rounded-lg text-xs transition-colors cursor-pointer"
+                                                        >
+                                                            {item}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 border-b border-slate-100 pb-1">Fixings</span>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {['90mm Nails', '50mm Nails'].map(item => (
+                                                        <button key={item} onClick={() => quickAddMaterial(item)} className="px-2 py-1.5 bg-amber-50 text-amber-700 hover:bg-amber-100 rounded-lg text-xs transition-colors font-medium cursor-pointer">{item}</button>
+                                                    ))}
+                                                    {['80mm Screws', '50mm Screws', '25mm Drywall'].map(item => (
+                                                        <button key={item} onClick={() => quickAddMaterial(item)} className="px-2 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs transition-colors cursor-pointer">{item}</button>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 border-b border-slate-100 pb-1">Ground & Prep</span>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {['Postcrete'].map(item => (
+                                                        <button key={item} onClick={() => quickAddMaterial(item)} className="px-2 py-1.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg text-xs transition-colors font-medium cursor-pointer">{item}</button>
+                                                    ))}
+                                                    {['DPM Roll', 'House Wrap', 'Insulation', 'Barge Board'].map(item => (
+                                                        <button key={item} onClick={() => quickAddMaterial(item)} className="px-2 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs transition-colors cursor-pointer">{item}</button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="lg:col-span-7 space-y-4">
+                                <div className="flex justify-between items-center">
+                                    <h3 className="font-bold text-slate-600">Active Order</h3>
+                                    <button 
+                                        onClick={() => window.print()}
+                                        className="flex items-center gap-2 bg-white border border-slate-200 px-4 py-2 rounded-xl text-sm font-bold hover:bg-slate-50 transition-all text-blue-500 cursor-pointer"
+                                    >
+                                        <FileText size={16} /> Get PDF / Print
+                                    </button>
+                                </div>
+                                <div className="bg-white/95 border border-white/20 shadow-xl rounded-2xl p-6 backdrop-blur-sm min-h-[400px]">
+                                    <ul className="space-y-3">
+                                        {materials.map(m => (
+                                            <li key={m.id} className="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-100 group shadow-sm">
+                                                <div className="flex items-center gap-4">
+                                                    <span className="w-10 h-10 flex items-center justify-center bg-slate-50 border border-slate-100 rounded-lg font-bold text-xs text-blue-500">{m.qty}</span>
+                                                    <span className="font-bold text-slate-700 uppercase tracking-tight text-sm">{m.desc}</span>
+                                                </div>
+                                                <button 
+                                                    onClick={() => setMaterials(materials.filter(i => i.id !== m.id))}
+                                                    className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all p-2"
+                                                >
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    {materials.length === 0 && (
+                                        <div className="flex flex-col items-center justify-center py-20 opacity-30">
+                                            <Package size={48} className="mb-2" />
+                                            <p className="text-xs font-bold uppercase tracking-widest">List is Empty</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </main>
             </div>
 
-            <div className="grid grid-cols-2 gap-5">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Rate (£/hr)</label>
-                <input
-                  type="number"
-                  name="hourlyRate"
-                  value={formData.hourlyRate}
-                  onChange={handleInputChange}
-                  min="0"
-                  step="0.01"
-                  className="block w-full px-4 py-3 bg-gray-50 border-transparent rounded-xl focus:border-accent focus:bg-white focus:ring-0 transition-colors"
-                  placeholder="45.00"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Margin (%)</label>
-                <input
-                  type="number"
-                  name="profitMargin"
-                  value={formData.profitMargin}
-                  onChange={handleInputChange}
-                  min="0"
-                  className="block w-full px-4 py-3 bg-gray-50 border-transparent rounded-xl focus:border-accent focus:bg-white focus:ring-0 transition-colors"
-                  placeholder="20"
-                  required
-                />
-              </div>
+            {/* PRINT VIEW */}
+            <div className="print-only px-8">
+                <table className="w-full border-collapse">
+                    <thead>
+                        <tr className="border-b-2 border-slate-300">
+                            <th className="py-4 text-left w-12 text-slate-300 italic font-normal">TICK</th>
+                            <th className="py-4 text-left w-24">QTY</th>
+                            <th className="py-4 text-left font-bold uppercase tracking-widest">DESCRIPTION</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                        {materials.map(m => (
+                            <tr key={m.id}>
+                                <td className="py-4 border-b border-slate-100 text-2xl font-light text-slate-200">▢</td>
+                                <td className="py-4 font-bold border-b border-slate-100 text-lg">{m.qty}</td>
+                                <td className="py-4 border-b border-slate-100 uppercase font-bold tracking-tight text-lg">{m.desc}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <div className="mt-20 pt-8 border-t border-slate-200 text-[10px] text-slate-400 flex justify-between uppercase font-bold tracking-widest">
+                    <span>Generated via Quote Command</span>
+                    <span>{new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</span>
+                </div>
             </div>
-
-            <button
-              type="submit"
-              className="w-full flex justify-center py-4 px-4 border border-transparent rounded-xl shadow-lg text-lg font-bold text-white bg-accent hover:opacity-90 transition-all transform hover:scale-[1.02]"
-            >
-              Calculate Quote
-            </button>
-          </form>
         </div>
-      </div>
-
-      {/* Dashboard */}
-      <div className="lg:col-span-2">
-        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100 h-full">
-          <div className="flex flex-wrap justify-between items-center mb-8 gap-4">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-slate-900/10 rounded-full text-slate-900">
-                <LayoutDashboard size={24} />
-              </div>
-              <h2 className="text-2xl font-bold text-gray-900">Active Quotes</h2>
-            </div>
-            {quotes.length > 0 && (
-              <button
-                onClick={exportCSV}
-                className="flex items-center gap-2 py-2 px-5 border-2 border-slate-900/10 text-slate-900 font-semibold rounded-full hover:bg-slate-900 hover:text-white transition-all"
-              >
-                <Download size={18} />
-                Export CSV
-              </button>
-            )}
-          </div>
-
-          <div className="overflow-x-auto">
-            {quotes.length === 0 ? (
-              <div className="text-center py-20 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                <p className="text-gray-500 text-lg">No quotes generated yet.</p>
-                <p className="text-sm text-gray-400 mt-2">Use the estimator to create your first quote.</p>
-              </div>
-            ) : (
-              <table className="min-w-full divide-y divide-gray-100">
-                <thead>
-                  <tr>
-                    <th
-                      onClick={() => requestSort('clientName')}
-                      className="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-accent"
-                    >
-                      Client
-                    </th>
-                    <th
-                      onClick={() => requestSort('labourHours')}
-                      className="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-accent"
-                    >
-                      Hours
-                    </th>
-                    <th
-                      onClick={() => requestSort('profitAmount')}
-                      className="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-accent"
-                    >
-                      Profit
-                    </th>
-                    <th
-                      onClick={() => requestSort('totalQuoteVat')}
-                      className="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-accent"
-                    >
-                      Total (Inc VAT)
-                    </th>
-                    <th className="px-4 py-3"></th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {sortedQuotes.map((quote) => (
-                    <tr key={quote.id} className="hover:bg-gray-50/50 transition-colors group">
-                      <td className="px-4 py-4 whitespace-nowrap">
-                        <div className="font-bold text-gray-900">{quote.clientName}</div>
-                        <div className="text-xs text-gray-400">Mat: {formatCurrency(quote.materialsCost)}</div>
-                      </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {quote.labourHours} hrs
-                      </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-sm font-bold text-green-600 bg-green-50 rounded-lg">
-                        {formatCurrency(quote.profitAmount)}
-                      </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-base font-bold text-gray-900">
-                        {formatCurrency(quote.totalQuoteVat)}
-                      </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-right">
-                        <button
-                          onClick={() => deleteQuote(quote.id)}
-                          className="text-gray-300 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50"
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default QuoteCalculator;

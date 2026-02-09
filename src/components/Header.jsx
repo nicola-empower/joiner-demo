@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Phone } from 'lucide-react';
 
-const Header = ({ title = "Trade Services", phone = "0123 456 7890" }) => {
+const Header = ({ title = "Trade Services", phone = "01223 900 123" }) => {
     const [isScrolled, setIsScrolled] = useState(false);
 
     useEffect(() => {
@@ -28,6 +28,9 @@ const Header = ({ title = "Trade Services", phone = "0123 456 7890" }) => {
                         <a href="/" className="hover:text-accent transition-colors">Home</a>
                         <a href="/portfolio" className="hover:text-accent transition-colors">Gallery</a>
                         <a href="#contact" className="hover:text-accent transition-colors">Contact</a>
+                        <a href="/admin" className="flex items-center gap-1.5 text-accent hover:text-white hover:bg-accent/80 px-3 py-1 rounded-full border border-accent/30 transition-all text-xs font-bold uppercase tracking-wide">
+                            Admin
+                        </a>
                     </nav>
                     <a
                         href={`tel:${phone.replace(/\s/g, '')}`}

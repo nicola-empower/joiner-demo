@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import JobCard from './JobCard';
 import JobForm from './JobForm';
-import { MOCK_JOBS, Job } from '@/lib/constants';
+import { MOCK_JOBS, type Job } from '@/lib/constants';
 import { Plus, Search, Filter } from 'lucide-react';
 
 export default function JobManager() {

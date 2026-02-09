@@ -31,3 +31,33 @@ body {
   color: #1c1917;
   /* stone-900 */
 }
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  body {
+    background: white;
+    padding: 0;
+  }
+
+  main {
+    margin-top: 0 !important;
+  }
+}
+
+.print-only {
+  display: none;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+}
