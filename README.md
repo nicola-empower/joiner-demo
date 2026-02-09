@@ -11,7 +11,13 @@ This is a premium, high-performance website built specifically for the **joiner*
 *   **Responsive Design**: Mobile-first approach for all pages.
 *   **Local SEO**: Optimized footer and content for local service area visibility.
 
-### 2. Admin Business Suite (New!)
+### 2. Client Experience (Premium Tests)
+*   **Before/After Sliders**: Interactive visual comparisons for project transformations.
+*   **Process Visualization**: Step-by-step graphical flow of the service journey.
+*   **Service Area Map**: Interactive Leaflet map showing local coverage zones.
+*   **Motion Effects**: Subtle animations powered by Framer Motion for a polished feel.
+
+### 3. Admin Business Suite (New!)
 A password-protected portal (/admin) designed to run the business, not just market it.
 
 *   **📊 Quote Generator**: creating instant, accurate estimates for customers.
@@ -24,7 +30,10 @@ A password-protected portal (/admin) designed to run the business, not just mark
 *   **Framework**: [Astro](https://astro.build/)
 *   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 *   **Icons**: [Lucide React](https://lucide.dev/)
-*   **Interactivity**: React (for Admin Suite tools)
+*   **Interactivity**: React 19
+*   **Animations**: [Framer Motion](https://www.framer.com/motion/)
+*   **Maps**: [Leaflet](https://leafletjs.com/) & React Leaflet
+*   **PDF Generation**: jspdf (for invoices)
 *   **Deployment**: Vercel / Netlify Ready
 
 ## 🏁 Getting Started
@@ -63,10 +72,11 @@ npm run build
   /components    # UI Components (Header, Footer, specialized blocks)
     /admin       # React components for the Admin Suite (JobManager, InvoiceGenerator, etc.)
   /layouts       # Main page layouts
+  /lib           # Utilities and constants (job data, trade types)
   /pages         # Route definitions
     /admin       # Admin portal routes (dashboard, invoices, jobs, etc.)
   /styles        # Global CSS and Tailwind directives
 \\\
 
 ---
-*Built by Empower Digital Solutions*
+*Built by Nicola Berry Empower Digital Solutions*
