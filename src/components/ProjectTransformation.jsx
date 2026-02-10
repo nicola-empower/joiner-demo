@@ -5,9 +5,9 @@ const ProjectTransformation = () => {
     const [view, setView] = useState('after'); // 'before', 'after', 'night'
 
     const images = {
-        before: "/images/before1.jpeg",
-        after: "/images/after1.jpeg",
-        night: "/images/night1.jpeg"
+        before: "/hero.png",
+        after: "/images/joiner-library.png",
+        night: "/images/joiner-hallway.png"
     };
 
     return (

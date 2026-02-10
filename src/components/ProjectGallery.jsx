@@ -3,9 +3,9 @@ import { ZoomIn } from 'lucide-react';
 
 const ProjectGallery = () => {
     const images = [
-        { src: "/images/job2-1.jpg", title: "Project Overview", desc: "Custom fitted joinery" },
-        { src: "/images/job2-2.jpg", title: "Detail View", desc: "Precision craftsmanship" },
-        { src: "/images/job2-3.jpg", title: "Material Finish", desc: "High-grade timber" }
+        { src: "/images/joiner-library.png", title: "Project Overview", desc: "Custom fitted joinery" },
+        { src: "/images/joiner-hallway.png", title: "Detail View", desc: "Precision craftsmanship" },
+        { src: "/images/joiner-kitchen-drawer.png", title: "Material Finish", desc: "High-grade timber" }
     ];
 
     return (
